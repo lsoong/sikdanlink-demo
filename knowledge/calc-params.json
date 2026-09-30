@@ -1,13 +1,13 @@
 {
   "_comment": "이 파일은 손으로 고치지 않는다. 사서 지식베이스(볼트 kb/fitness)에서 scripts/import-kb.mjs 로 생성된다.",
   "_schemaVersion": 1,
-  "_generatedFrom": "kb/fitness v1.1.0 (2026-09-30) · SYA-547",
-  "_provenance": "사서 근거 기반 지식베이스 kb/fitness v1.1.0 (SYA-547, 인용 문헌 76건)",
+  "_generatedFrom": "kb/fitness v1.3.0 (2026-09-30)",
+  "_provenance": "근거 기반 지식베이스 kb/fitness v1.3.0 (인용 문헌 76건)",
   "activityLevels": {
     "sedentary": {
       "label": "좌식",
-      "multiplier": 1.35,
-      "description": "운동 없음 (관행값 1.2 → 권고 1.35)"
+      "multiplier": 1.4,
+      "description": "운동 없음 (관행값 1.2 → 권고 1.4)"
     },
     "light": {
       "label": "가벼움",

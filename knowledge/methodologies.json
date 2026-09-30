@@ -1,8 +1,8 @@
 {
   "_comment": "이 파일은 손으로 고치지 않는다. 사서 지식베이스(볼트 kb/fitness)에서 scripts/import-kb.mjs 로 생성된다.",
   "_schemaVersion": 1,
-  "_generatedFrom": "kb/fitness v1.1.0 (2026-09-30) · SYA-547",
-  "_provenance": "방법론 7개 · 사서 지식베이스 B영역",
+  "_generatedFrom": "kb/fitness v1.3.0 (2026-09-30)",
+  "_provenance": "방법론 7개 · 지식베이스 B영역",
   "premise": {
     "statement": "칼로리와 단백질을 맞추면 방법론 간 체지방 감량 차이는 작다. 차별점은 지속가능성·선호·의학적 적응이다.",
     "confidence": "high",
