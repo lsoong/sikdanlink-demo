@@ -1,0 +1,68 @@
+{
+  "_comment": "이 파일은 손으로 고치지 않는다. 사서 지식베이스(볼트 kb/fitness)에서 scripts/import-kb.mjs 로 생성된다.",
+  "_schemaVersion": 1,
+  "_generatedFrom": "kb/fitness v1.1.0 (2026-09-30) · SYA-547",
+  "_provenance": "사서 근거 기반 지식베이스 kb/fitness v1.1.0 (SYA-547, 인용 문헌 76건)",
+  "activityLevels": {
+    "sedentary": {
+      "label": "좌식",
+      "multiplier": 1.35,
+      "description": "운동 없음 (관행값 1.2 → 권고 1.35)"
+    },
+    "light": {
+      "label": "가벼움",
+      "multiplier": 1.375,
+      "description": "주 1-3회 가벼운 운동"
+    },
+    "moderate": {
+      "label": "보통",
+      "multiplier": 1.55,
+      "description": "주 3-5회 중강도 운동"
+    },
+    "very": {
+      "label": "활발",
+      "multiplier": 1.725,
+      "description": "주 6-7회 운동"
+    },
+    "extra": {
+      "label": "매우 활발",
+      "multiplier": 1.9,
+      "description": "하루 2회 훈련 또는 육체노동+훈련"
+    }
+  },
+  "goals": {
+    "cut": {
+      "label": "체지방 감량",
+      "calorieDeltaRatio": -0.2,
+      "description": "TDEE의 20% 적자. 근육 유지하며 체지방을 줄인다. (적자 상한 25% 이내)"
+    },
+    "maintain": {
+      "label": "체중 유지",
+      "calorieDeltaRatio": 0,
+      "description": "TDEE와 동일. 컨디션·퍼포먼스 유지."
+    },
+    "bulk": {
+      "label": "근육 증량",
+      "calorieDeltaRatio": 0.1,
+      "description": "TDEE의 10% 흑자. 지방 증가를 최소화한 린 벌크."
+    },
+    "recomp": {
+      "label": "체성분 개선",
+      "calorieDeltaRatio": -0.05,
+      "description": "TDEE의 5% 적자. 근육은 늘리고 체지방은 줄이는 느린 전략."
+    }
+  },
+  "safety": {
+    "minCaloriesMale": 1500,
+    "minCaloriesFemale": 1200,
+    "maxWeeklyLossRateOfBodyWeight": 0.0075,
+    "dangerWeeklyLossRateOfBodyWeight": 0.01,
+    "maxWeeklyGainRateOfBodyWeight": 0.005,
+    "kcalPerKgFat": 7700
+  },
+  "kcalPerGram": {
+    "carb": 4,
+    "protein": 4,
+    "fat": 9
+  }
+}

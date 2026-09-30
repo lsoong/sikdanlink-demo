@@ -1,0 +1,179 @@
+{
+  "_comment": "이 파일은 손으로 고치지 않는다. 사서 지식베이스(볼트 kb/fitness)에서 scripts/import-kb.mjs 로 생성된다.",
+  "_schemaVersion": 1,
+  "_generatedFrom": "kb/fitness v1.1.0 (2026-09-30) · SYA-547",
+  "_provenance": "방법론 7개 · 사서 지식베이스 B영역",
+  "premise": {
+    "statement": "칼로리와 단백질을 맞추면 방법론 간 체지방 감량 차이는 작다. 차별점은 지속가능성·선호·의학적 적응이다.",
+    "confidence": "high",
+    "evidence": [
+      "Johnston BC, et al. (2014). JAMA 312(9):923-933. — 48개 RCT 7,286명. 이름 붙은 다이어트 간 감량 차이는 임상적으로 미미.",
+      "Gardner CD, et al. (2018) DIETFITS. JAMA 319(7):667-679. — 저지방 -5.3kg vs 저탄수 -6.0kg, 12개월, 유의차 없음. 유전형·인슐린으로 반응 예측 실패.",
+      "Sacks FM, et al. (2009) POUNDS LOST. N Engl J Med 360(9):859-873. — 4개 매크로 조성, 2년. 결과를 가른 것은 조성이 아니라 순응도.",
+      "Hall KD, et al. (2016). Am J Clin Nutr 104(2):324-333. — 대사병동 등칼로리 케톤식 — 대사적 이득 없음, 체지방 감소 일시적 지연.",
+      "Naude CE, et al. (2014). PLoS ONE 9(7):e100652. — 저탄수 vs 등에너지 균형식 — 차이 없음."
+    ],
+    "forbiddenClaims": [
+      "케토가 더 빨리 빠진다 (초기 감소는 글리코겐+결합수)",
+      "간헐적 단식이 대사를 올린다 (칼로리 통제 하 근거 없음)",
+      "이 방법론이 당신의 체질에 맞다 (유전형 매칭은 DIETFITS에서 실패)"
+    ]
+  },
+  "methodologies": [
+    {
+      "id": "iifym",
+      "name": "IIFYM (유연식)",
+      "summary": "금지 식품 없이 총량만 맞춘다. 외식이 잦아도 유지된다.",
+      "ratio": {
+        "carbPercent": 47.5,
+        "proteinPercent": 30,
+        "fatPercent": 25
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "cut",
+        "maintain",
+        "recomp",
+        "bulk"
+      ],
+      "source": "[B1] 근거 등급 high · 등칼로리 기준선",
+      "caution": "이런 경우 피하세요: 기록을 전혀 못 하는 경우, 섭식장애 이력 (숫자 집착 유발 가능)."
+    },
+    {
+      "id": "keto",
+      "name": "케토제닉",
+      "summary": "탄수화물을 극단적으로 줄이고 지방을 주에너지로 쓴다.",
+      "ratio": {
+        "carbPercent": 7.500000000000001,
+        "proteinPercent": 25,
+        "fatPercent": 67.5
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "cut"
+      ],
+      "source": "[B2] 근거 등급 high · 등칼로리에서 추가 이득 없음 · Hall 2016 대사병동 — 이득 없음, 오히려 일시적 지연. Naude 2014 — 차이 없음.",
+      "caution": "이런 경우 피하세요: 고강도·해당계 훈련, 바디프로필 프렙, 1형 당뇨, 임신·수유, 췌장·담낭 질환, 지방대사 선천질환. 근육 글리코겐 고갈로 볼륨·펌핑 손실, D2 카브로딩과 충돌, Vargas 2018에서 제지방 증가 열위"
+    },
+    {
+      "id": "tre-16-8",
+      "name": "간헐적 단식 16:8",
+      "summary": "매크로는 표준과 같고 먹는 시간만 8시간으로 제한한다.",
+      "ratio": {
+        "carbPercent": 47.5,
+        "proteinPercent": 30,
+        "fatPercent": 25
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "cut",
+        "maintain"
+      ],
+      "source": "[B3] 근거 등급 medium · 등칼로리에서 추가 이득 없음 · TREAT RCT (Lowe 2020) — 대조군 대비 유의한 추가 감량 없음. 감소분 중 제지방 비율이 유의하게 높았다.",
+      "caution": "매크로 비율은 «표준 칼로리 적자 / 플렉시블 다이어팅 (IIFYM)» 과 같습니다 — 이 방법론이 규정하는 것은 비율이 아니라 먹는 시간입니다. 이런 경우 피하세요: 아침 훈련자, 섭식장애 이력, 임신·수유, 인슐린·설포닐우레아 사용 당뇨, 성장기 청소년, 위식도역류."
+    },
+    {
+      "id": "fasting-5-2",
+      "name": "간헐적 단식 5:2",
+      "summary": "주 5일은 평소대로, 2일은 크게 줄인다. 주간 총량이 기준이다.",
+      "ratio": {
+        "carbPercent": 47.5,
+        "proteinPercent": 30,
+        "fatPercent": 25
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "cut"
+      ],
+      "source": "[B4] 근거 등급 medium · 등칼로리에서 추가 이득 없음 · Trepanowski 2017 — 12개월 감량 차이 없음. Patikorn 2021 우산고찰의 변형 ADF 신호는 주간 총 칼로리 감소로 설명 가능.",
+      "caution": "매크로 비율은 «표준 칼로리 적자 / 플렉시블 다이어팅 (IIFYM)» 과 같습니다 — 이 방법론이 규정하는 것은 비율이 아니라 먹는 시간입니다. 이런 경우 피하세요: B3와 동일, 단식일 다음날 보상 폭식 경향."
+    },
+    {
+      "id": "carb-cycling",
+      "name": "카브 사이클링",
+      "summary": "훈련일엔 탄수화물을 올리고 휴식일엔 내린다. 주간 총량은 같다.",
+      "ratio": {
+        "carbPercent": 47.5,
+        "proteinPercent": 30,
+        "fatPercent": 25
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": [
+        0.4,
+        1.6,
+        0.4,
+        1.6,
+        0.4,
+        1.6,
+        1
+      ],
+      "suitableGoals": [
+        "cut",
+        "recomp"
+      ],
+      "source": "[B5] 근거 등급 low · 등칼로리 우월성 미확인 · 근거 미확인 — 주간 칼로리·단백질을 맞춘 조건에서 우월성을 보인 RCT를 찾지 못했다 (2026-09-30 조사). Impey 2018의 탄수 주기화 틀은 지구성 종목 훈련 적응이 대상이며 감량 우위를 주장하지 않는다.",
+      "caution": "매크로 비율은 «표준 칼로리 적자 / 플렉시블 다이어팅 (IIFYM)» 과 같습니다 — 이 방법론이 규정하는 것은 비율이 아니라 일별 배치입니다. 이런 경우 피하세요: 매일 훈련 (저탄수일 배치 불가), 기록 부담이 큼. 이 방법론은 근거 등급이 낮습니다 — 효과가 아니라 선호·수행 배치 옵션으로 보세요."
+    },
+    {
+      "id": "high-protein",
+      "name": "고단백 저지방",
+      "summary": "등칼로리에서 작은 우위가 확인된 유일한 방법론이다.",
+      "ratio": {
+        "carbPercent": 50,
+        "proteinPercent": 35,
+        "fatPercent": 20
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.8,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "cut",
+        "recomp"
+      ],
+      "source": "[B6] 근거 등급 high · Wycherley 2012 메타분석(24 RCT) — 고단백·저지방이 표준단백 대비 체중·지방 감소가 크고 제지방 손실이 적었다. 단 이득은 비율이 아니라 단백질 절대량에서 온다 → B1에서 단백질을 올리면 사실상 동일해진다.",
+      "caution": "이런 경우 피하세요: 신장질환, 단백질 식품 조달·조리가 어려운 환경."
+    },
+    {
+      "id": "mediterranean",
+      "name": "지중해식",
+      "summary": "올리브유·생선·통곡물 중심. 장기 순응도가 높다.",
+      "ratio": {
+        "carbPercent": 45,
+        "proteinPercent": 17.5,
+        "fatPercent": 37.5
+      },
+      "proteinFloor": {
+        "gramsPerKg": 1.6,
+        "basis": "bodyWeight"
+      },
+      "carbCycle": null,
+      "suitableGoals": [
+        "maintain",
+        "recomp"
+      ],
+      "source": "[B7] 근거 등급 medium · 등칼로리에서 추가 이득 없음 · 감량 자체의 우위 없음 (Johnston 2014). 강점은 체중이 아니라 심혈관 결과와 장기 순응도 — 이를 감량 효과로 포장하지 않는다.",
+      "caution": "이런 경우 피하세요: 빠른 감량이 목표, 견과·어패류 알레르기, 식재료 비용 민감 (한국에서 비싸다)."
+    }
+  ]
+}
