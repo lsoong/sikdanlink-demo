@@ -1,0 +1,135 @@
+{
+  "_comment": "코드에 상수로 박히는 숫자 6개에 대해, ① 출처·적용조건(트레이너·개발자용) ② 회원에게 그대로 읽어 줄 수 있는 한 문장(UI 노출용)을 짝지은 파일. 요청: SYA-547 코멘트(사업가, 2026-09-30, 트레이너 B2B 확정). 장인의 Phase 1 스키마에는 이 층을 받는 필드가 없으므로 별도 파일로 둔다 — calc-params.json 로더를 건드리지 않는다. memberLine 은 의료법 문구 가이드(SYA-546 viability §6-4)를 따라 '치료·처방·진단·개선·효능·질환명'을 쓰지 않고 '계산·기록·목표 설정·추적·안내'로 쓴다.",
+  "_schemaVersion": 1,
+  "_provenance": "SYAI 사서 근거 기반 지식베이스 (SYA-547, 2026-09-30). 숫자의 정본은 kb/fitness/params/calculation.json, 데모 어댑터는 kb/fitness/api/calc-params.json.",
+  "wordingGuard": {
+    "forbidden": [
+      "치료",
+      "처방",
+      "진단",
+      "개선",
+      "효능",
+      "완치",
+      "질환명 전제 서술"
+    ],
+    "preferred": [
+      "계산",
+      "기록",
+      "목표 설정",
+      "추적",
+      "안내"
+    ],
+    "note": "memberLine 전 항목이 이 규칙을 통과한 상태다. 문장을 고칠 때 같은 규칙을 적용한다."
+  },
+  "constants": [
+    {
+      "id": "bmr-formula-choice",
+      "label": "BMR 공식 선택 기준",
+      "value": "체성분 측정값이 30일 이내면 Katch-McArdle 1순위, 없거나 오래됐으면 Mifflin-St Jeor. 두 값이 15% 이상 벌어지면 체성분 재입력 안내. Harris-Benedict는 신규 산출에 쓰지 않는다.",
+      "kbChunk": "A1",
+      "confidence": "medium",
+      "evidence": {
+        "source": [
+          "Frankenfield D, Roth-Yousey L, Compher C (2005). Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review. J Am Diet Assoc 105(5):775-789.",
+          "Cunningham JJ (1991). Body composition as a determinant of energy expenditure. Am J Clin Nutr 54(6):963-969."
+        ],
+        "population": "건강한 비만·비비만 성인. Katch-McArdle·Cunningham 계열은 체성분(제지방량) 측정값이 있는 집단.",
+        "conditions": "제지방량이 정확할 때만 Katch-McArdle의 우위가 성립한다. 인바디(다주파 BIA)는 수분 상태·식사·운동 직후에 흔들리므로 측정 조건을 통제해야 한다.",
+        "out_of_scope": "고령·저근육 집단(Katch-McArdle에 성별·나이 항이 없다), 측정 후 30일 초과한 체성분, 임신·수유, 성장기 청소년. 어떤 예측식도 개인 오차 ±10~15%가 있어 공식 선택보다 2주 실측 보정(A6)이 결과를 더 크게 좌우한다."
+      },
+      "memberLine": "체지방률을 알고 있으면 그 값을 넣는 공식으로 계산합니다. 근육량이 많은 분일수록 키·몸무게만 쓰는 공식보다 실제에 가깝게 나와요."
+    },
+    {
+      "id": "activity-multiplier",
+      "label": "활동계수",
+      "value": "1.40 / 1.55 / 1.70 / 1.85 / 2.10 (5단계)",
+      "kbChunk": "A2",
+      "confidence": "medium",
+      "evidence": {
+        "source": [
+          "FAO/WHO/UNU (2004). Human Energy Requirements. FAO Food and Nutrition Technical Report Series 1. (PAL 구간: 좌식·가벼움 1.40-1.69, 활동적·중등도 1.70-1.99, 격렬 2.00-2.40)"
+        ],
+        "population": "성인 일반. PAL은 총에너지소비량을 기초대사량으로 나눈 값으로 정의된다.",
+        "conditions": "PAL 1.40이 건강한 성인 좌식 생활의 하한이다. 널리 쓰이는 1.20~1.90 사다리는 1차 출처를 찾지 못했고, 하단 1.20은 FAO 최저치보다 낮아 소비량을 낮게 잡는다 — 그래서 하단을 1.40으로 올렸다.",
+        "out_of_scope": "PAL 2.40 초과는 장기 유지가 어렵다. 이 계수는 측정 BMR을 전제로 정의된 값인데 서비스는 예측 BMR에 곱하므로 개인 오차가 남는다. 남은 오차는 2주 실측 보정(A6)으로 해소한다."
+      },
+      "memberLine": "하루에 몸을 얼마나 쓰는지에 따라 기초 소비량에 곱하는 배수가 달라집니다. 사무직이면 1.4배에서 시작해서, 2주간 체중 기록을 보고 회원님 값으로 맞춰 갑니다."
+    },
+    {
+      "id": "goal-calorie-delta",
+      "label": "목적별 칼로리 델타",
+      "value": "감량 -20% / 유지 0% / 증량 +10% / 재구성 -5% (TDEE 대비). 적자 상한 -25%, 하드캡 -30%.",
+      "kbChunk": "A3",
+      "confidence": "medium",
+      "evidence": {
+        "source": [
+          "Garthe I, Raastad T, Refsnes PE, Koivisto A, Sundgot-Borgen J (2011). Int J Sport Nutr Exerc Metab 21(2):97-104.",
+          "Helms ER, Aragon AA, Fitschen PJ (2014). J Int Soc Sports Nutr 11:20.",
+          "Iraki J, Fitschen P, Espinar S, Helms E (2019). Sports 7(7):154. (증량기 흑자)",
+          "Barakat C, Pearson J, Escalante G, Campbell B, De Souza EO (2020). Strength Cond J 42(5):7-21. (체성분 재구성)"
+        ],
+        "population": "저항운동을 병행하는 성인. Garthe 2011은 엘리트 선수 대상.",
+        "conditions": "-20%는 체중 대비 주당 0.5~0.75% 감량 속도에 해당하는 구간이다. 정본은 단일 비율이 아니라 체지방률별 속도 구간(A3)이다 — 체지방이 높은 초기에는 더 큰 적자를, 저체지방 구간에서는 더 작은 적자를 쓴다.",
+        "out_of_scope": "의료 감독하의 초저열량식, 임신·수유, 성장기 청소년. 재구성(-5%)의 근거는 리뷰 수준이며 초심자·재개자·체지방이 높은 경우에 주로 관찰된다(confidence: medium)."
+      },
+      "memberLine": "감량 목표라면 하루에 쓰는 양보다 20% 정도 적게 먹는 선에서 잡습니다. 더 크게 줄이면 근육이 같이 빠지기 쉬워서, 그 선을 기준으로 두고 기록을 보며 조정해요."
+    },
+    {
+      "id": "protein-g-per-kg",
+      "label": "단백질 계수",
+      "value": "유지·증량 1.6-2.2 g/kg 체중 / 일반 감량 1.8-2.4 g/kg 체중 / 저체지방 감량·프렙 2.3-3.1 g/kg 제지방량 / 고도비만 1.6-2.0 g/kg 제지방량. 끼니당 0.40-0.55 g/kg 체중을 3-6끼로 균등 분배.",
+      "kbChunk": "A4, C6, E5",
+      "confidence": "high",
+      "evidence": {
+        "source": [
+          "Morton RW, et al. (2018). Br J Sports Med 52(6):376-384. (메타회귀 용량-반응 평탄점 1.62 g/kg, 95% CI 1.03-2.20)",
+          "Jäger R, et al. (2017). ISSN Position Stand: protein and exercise. J Int Soc Sports Nutr 14:20.",
+          "Helms ER, Zinn C, Rowlands DS, Brown SR (2014). Int J Sport Nutr Exerc Metab 24(2):127-138. (감량 중 마른 저항운동 선수 2.3-3.1 g/kg FFM)",
+          "Mettler S, Mitchell N, Tipton KD (2010). Med Sci Sports Exerc 42(2):326-337. (같은 적자에서 단백질을 올리면 제지방 손실이 줄었다)",
+          "Iraki J, Fitschen P, Espinar S, Helms E (2019). Sports 7(7):154. (끼니당 0.40-0.55 g/kg 체중을 3-6끼로 균등 분배 — 2026-09-30 원문 권고 확인)",
+          "Areta JL, et al. (2013). J Physiol 591(9):2319-2331. / Mamerow MM, et al. (2014). J Nutr 144(6):876-880. (끼니 균등 분배 — 원문 전문 미확인, references.md 말미 참조)"
+        ],
+        "population": "저항운동을 수행하는 성인. Helms 2014는 체지방이 낮은 선수, Mettler 2010은 칼로리 제한 중인 선수.",
+        "conditions": "저체지방 구간에서는 분모가 체중이 아니라 제지방량으로 바뀐다 — 인바디 값이 필요하다. 감량 중 근육 유지는 단백질 단독이 아니라 저항운동과 한 세트로 성립한다(C6: 볼륨은 줄여도 강도를 유지한다).",
+        "out_of_scope": "신장 관련 병력이 있는 경우 고단백 권고를 적용하지 않고 의료진 안내로 넘긴다. 건강한 성인에서 신·간기능 악화 근거는 없다(Antonio 2016). 일반·임상 맥락에서 통용되는 하한 1.2 g/kg보다 이 구간이 높은 이유는 대상이 저항운동 수행자이기 때문이다."
+      },
+      "memberLine": "단백질을 체중 1kg당 1.6g 잡는 건 근육을 지키면서 체중을 줄일 때 쓰는 일반적인 기준이에요. 체지방이 낮아질수록 조금 더 올려 잡고, 한 끼에 몰아 먹기보다 끼니마다 나눠 담습니다."
+    },
+    {
+      "id": "fat-floor",
+      "label": "지방 최소 섭취 하한",
+      "value": "max(총 kcal × 20% ÷ 9, 체중kg × 0.5) g — 둘 중 큰 값. 권장 20-35%(기본 25%), 프렙 구간 15-30%.",
+      "kbChunk": "A5",
+      "confidence": "medium",
+      "evidence": {
+        "source": [
+          "Helms ER, Aragon AA, Fitschen PJ (2014). J Int Soc Sports Nutr 11:20. (프렙 15-30% 에너지)",
+          "Institute of Medicine (2005). Dietary Reference Intakes (AMDR: 지방 20-35% 에너지).",
+          "Whittaker J, Wu K (2021). J Steroid Biochem Mol Biol 210:105878. (저지방식과 남성 총 테스토스테론)"
+        ],
+        "population": "성인 일반(AMDR), 자연 보디빌딩 프렙 선수(Helms 2014).",
+        "conditions": "Whittaker 2021은 저지방식이 남성 총 테스토스테론을 약 10-15% 낮췄다고 보고하지만 포함 연구 수가 적고 체형 결과로서의 의미는 불확실하다. 따라서 근거에 맞는 표현은 '위험하다'가 아니라 '20% 아래로 내릴 이유가 없다'다.",
+        "out_of_scope": "여성 호르몬 지표에 대한 동급 근거는 확인하지 못했다. 지용성 비타민·필수지방산 섭취를 별도로 보지 않는다."
+      },
+      "memberLine": "지방은 전체 칼로리의 20% 아래로는 내리지 않게 잡습니다. 더 내려서 얻는 게 없어서 하한으로 두고, 남는 몫을 탄수화물로 채워요."
+    },
+    {
+      "id": "max-weekly-loss-rate",
+      "label": "안전 감량률 상한",
+      "value": "권장 주당 체중의 0.5-0.75%, 상한 1.0%, 경고선 1.5%. 증량은 주당 0.5% 이내. 섭취량은 BMR 아래로 내리지 않는다.",
+      "kbChunk": "A3",
+      "confidence": "high",
+      "evidence": {
+        "source": [
+          "Garthe I, Raastad T, Refsnes PE, Koivisto A, Sundgot-Borgen J (2011). Int J Sport Nutr Exerc Metab 21(2):97-104.",
+          "Helms ER, Aragon AA, Fitschen PJ (2014). J Int Soc Sports Nutr 11:20."
+        ],
+        "population": "엘리트 선수(Garthe 2011: 주당 0.7% 군 대 1.4% 군 무작위 배정), 자연 보디빌딩 선수(Helms 2014).",
+        "conditions": "Garthe 2011에서 지방량은 양쪽 다 줄었지만 제지방량은 0.7% 군에서 +2.1% 증가하고 1.4% 군은 -0.2%로 변화가 없었다(군간 p<.01). 그래서 1.0%를 상한, 1.4%에 해당하는 1.5%를 경고선으로 둔다.",
+        "out_of_scope": "의료 감독하의 고도비만 감량 프로그램은 더 빠른 속도를 쓴다 — 이 상한은 그 맥락에 적용하지 않는다. 체중 1kg당 7700kcal 환산은 Wishnofsky 1958 상수이고 Hall 2008이 과대예측을 보였으므로, 실제 속도는 2주 실측 보정(A6)으로 다시 계산한다. 절대 하한 1500/1200kcal은 임상 관행값으로 1차 근거를 확인하지 못했다(confidence: low) — 더 원칙적인 하한은 '섭취량 ≥ BMR'이다."
+      },
+      "memberLine": "한 주에 체중의 1%까지를 상한으로 둡니다. 그보다 빠르게 빼면 줄어든 무게에서 근육이 차지하는 비중이 커진다고 보고돼 있어서, 목표가 그보다 빠르면 기간을 늘려 다시 계산해요."
+    }
+  ],
+  "_generatedFrom": "kb/fitness v1.4.0 (2026-09-30)"
+}

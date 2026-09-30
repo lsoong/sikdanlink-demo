@@ -1,55 +1,180 @@
 {
-  "_comment": "이 파일은 손으로 고치지 않는다. 사서 지식베이스(볼트 kb/fitness)에서 scripts/import-kb.mjs 로 생성된다.",
+  "_comment": "식단링크 계산 파라미터 — 사서 지식베이스(kb/fitness) 근거 반영본. 장인의 Phase 1 스텁 키 구조를 그대로 유지하고 값만 교체했다. 스키마 정본은 lsoong/sikdanlink 의 src/lib/types.ts CalcParams. 숫자의 정본은 kb/fitness/params/calculation.json 이고 이 파일은 그 부분집합을 데모 스키마로 옮긴 어댑터다. 두 파일이 어긋나면 params/calculation.json 이 맞다. goals.*.rateBands 는 Phase 2 신규(SYA-585, 장인 요청) — 인바디 체지방률로 속도 구간을 고르는 기계 판독 조건이다. 정본은 snake_case(select_by·member_line), 이 어댑터는 데모 관례대로 camelCase(selectBy·memberLine)를 쓴다. 두 층의 대조는 validate.py C5 가 표기 차이를 넘어서 값으로 한다. 구 로더 호환을 위해 calorieDeltaRatio 는 그대로 남겼다 — 밴드를 적용하지 않는 화면은 이 값만 써도 동작한다.",
   "_schemaVersion": 1,
-  "_generatedFrom": "kb/fitness v1.3.0 (2026-09-30)",
-  "_provenance": "근거 기반 지식베이스 kb/fitness v1.3.0 (인용 문헌 76건)",
+  "_provenance": "SYAI 사서 근거 기반 지식베이스 (SYA-547, 2026-09-30) — 활동계수 FAO/WHO/UNU 2004, 감량속도 Garthe 2011·Helms 2014, 증량속도 Iraki 2019·Slater 2019, 단백질 Morton 2018·ISSN 2017, 지방 Helms 2014·IOM AMDR. 예측식은 시작점이며 2주 실측으로 다시 계산합니다.",
+  "_safetyDerivation": {
+    "_note": "이 파일의 숫자 9개가 정본 params/calculation.json 의 어디서 오는지. 사람이 읽는 문서이자 validate.py C5 가 실제로 대조하는 목록이다 — 여기 적힌 파생과 값이 어긋나면 C5 가 error 를 낸다. 2026-09-30(SYA-585) 신설: 이 표가 없던 동안 safety 두 값이 장인 스텁 시절 값(0.01·0.015)으로 남아 주당 1.4% 감량이 '위험'이 아니라 '공격적'으로 떴다.",
+    "_rule": "밴드에서 오는 상한은 모두 '선택 가능한 밴드 중 default: true 인 것의 max'를 쓴다. aggressive.max(1.0%)를 쓰지 않는 이유는 정본이 그 밴드를 '체지방 높은 구간의 초기 한정'으로 조건부 허용하기 때문이다 — 조건을 모르는 상태의 상한은 조건 없이 적용되는 밴드에서 와야 한다. danger 는 해석 여지가 없다(not_recommended.min).",
+    "minCaloriesMale": "weight_loss_rates.safety_floors.absolute_min_kcal.male (confidence: low — 임상 관행값)",
+    "minCaloriesFemale": "weight_loss_rates.safety_floors.absolute_min_kcal.female (confidence: low — 임상 관행값)",
+    "maxWeeklyLossRateOfBodyWeight": "weight_loss_rates.bands[default: true].max ÷ 100 = standard.max 0.75%/주 → 0.0075",
+    "dangerWeeklyLossRateOfBodyWeight": "weight_loss_rates.bands[not_recommended].min ÷ 100 = 1.0%/주 → 0.01 (Garthe 2011에서 제지방 증가가 0이던 속도대의 하단)",
+    "maxWeeklyGainRateOfBodyWeight": "weight_gain_rates.bands[default: true].max ÷ 100 = standard_gain.max 0.5%/주 → 0.005 (Iraki 2019)",
+    "kcalPerKgFat": "weight_loss_rates.deficit_conversion.kcal_per_kg_bodyweight",
+    "kcalPerGram.carb": "carbohydrate.kcal_per_g",
+    "kcalPerGram.protein": "protein.kcal_per_g",
+    "kcalPerGram.fat": "fat.kcal_per_g"
+  },
   "activityLevels": {
     "sedentary": {
-      "label": "좌식",
+      "label": "거의 안 움직임",
       "multiplier": 1.4,
-      "description": "운동 없음 (관행값 1.2 → 권고 1.4)"
+      "description": "사무직, 따로 운동하지 않음"
     },
     "light": {
-      "label": "가벼움",
-      "multiplier": 1.375,
-      "description": "주 1-3회 가벼운 운동"
+      "label": "가벼운 활동",
+      "multiplier": 1.55,
+      "description": "주 1~3회 가벼운 운동"
     },
     "moderate": {
-      "label": "보통",
-      "multiplier": 1.55,
-      "description": "주 3-5회 중강도 운동"
+      "label": "보통 활동",
+      "multiplier": 1.7,
+      "description": "주 3~5회 중강도 운동"
     },
     "very": {
-      "label": "활발",
-      "multiplier": 1.725,
-      "description": "주 6-7회 운동"
+      "label": "활발한 활동",
+      "multiplier": 1.85,
+      "description": "주 6~7회 고강도 운동"
     },
     "extra": {
       "label": "매우 활발",
-      "multiplier": 1.9,
-      "description": "하루 2회 훈련 또는 육체노동+훈련"
+      "multiplier": 2.1,
+      "description": "하루 2회 운동, 또는 몸을 쓰는 직업에 운동까지"
     }
   },
   "goals": {
     "cut": {
       "label": "체지방 감량",
       "calorieDeltaRatio": -0.2,
-      "description": "TDEE의 20% 적자. 근육 유지하며 체지방을 줄인다. (적자 상한 25% 이내)"
+      "description": "하루 소비량의 20% 적자. 주당 체중의 0.5~0.75% 감량 속도에 해당합니다.",
+      "rateBands": [
+        {
+          "key": "conservative",
+          "label": "완속",
+          "weeklyRatePercent": {
+            "min": 0.25,
+            "max": 0.5
+          },
+          "selectBy": {
+            "bodyFatPercent": {
+              "male": {
+                "max": 12
+              },
+              "female": {
+                "max": 20
+              }
+            }
+          },
+          "lbmRisk": "very_low",
+          "default": false,
+          "memberLine": "체지방이 이미 낮은 편이면 주당 체중의 0.25~0.5%씩 천천히 줄이는 속도로 잡습니다. 근육을 지키기에 가장 여유 있는 속도예요."
+        },
+        {
+          "key": "standard",
+          "label": "중속",
+          "weeklyRatePercent": {
+            "min": 0.5,
+            "max": 0.75
+          },
+          "lbmRisk": "low",
+          "default": true,
+          "memberLine": "대부분은 주당 체중의 0.5~0.75%를 목표로 잡습니다. 체중 70kg이면 한 주에 350~525g 정도예요."
+        },
+        {
+          "key": "aggressive",
+          "label": "고속",
+          "weeklyRatePercent": {
+            "min": 0.75,
+            "max": 1
+          },
+          "selectBy": {
+            "bodyFatPercent": {
+              "male": {
+                "min": 20
+              },
+              "female": {
+                "min": 30
+              }
+            }
+          },
+          "lbmRisk": "moderate",
+          "default": false,
+          "memberLine": "체지방이 높은 편이면 시작 몇 주만 주당 0.75~1.0%까지 잡습니다. 그 뒤에는 속도를 낮춰 근육을 지키는 쪽으로 옮깁니다."
+        },
+        {
+          "key": "not_recommended",
+          "label": "비권장",
+          "weeklyRatePercent": {
+            "min": 1,
+            "max": null
+          },
+          "selectable": false,
+          "lbmRisk": "high",
+          "default": false,
+          "memberLine": "주당 체중의 1%를 넘는 속도는 권하지 않습니다. 이 속도에서는 줄어든 무게에 근육이 섞이는 비중이 커진 기록이 있어요."
+        }
+      ]
     },
     "maintain": {
       "label": "체중 유지",
       "calorieDeltaRatio": 0,
-      "description": "TDEE와 동일. 컨디션·퍼포먼스 유지."
+      "description": "하루 소비량과 동일. 컨디션·수행 유지 구간입니다."
     },
     "bulk": {
       "label": "근육 증량",
       "calorieDeltaRatio": 0.1,
-      "description": "TDEE의 10% 흑자. 지방 증가를 최소화한 린 벌크."
+      "description": "하루 소비량의 10% 흑자. 주당 체중 0.5% 이내로 늘리는 속도입니다.",
+      "rateBands": [
+        {
+          "key": "lean_gain",
+          "label": "완속 증량",
+          "weeklyRatePercent": {
+            "min": 0.1,
+            "max": 0.25
+          },
+          "selectBy": {
+            "bodyFatPercent": {
+              "male": {
+                "min": 15
+              },
+              "female": {
+                "min": 25
+              }
+            }
+          },
+          "fatGainRisk": "low",
+          "default": false,
+          "memberLine": "체지방이 이미 높은 편이면 주당 체중의 0.1~0.25%씩 아주 천천히 올립니다."
+        },
+        {
+          "key": "standard_gain",
+          "label": "표준 증량",
+          "weeklyRatePercent": {
+            "min": 0.25,
+            "max": 0.5
+          },
+          "fatGainRisk": "moderate",
+          "default": true,
+          "memberLine": "대부분은 주당 체중의 0.25~0.5%를 목표로 잡습니다. 체중 70kg이면 한 주에 175~350g 정도예요."
+        },
+        {
+          "key": "not_recommended",
+          "label": "비권장",
+          "weeklyRatePercent": {
+            "min": 0.5,
+            "max": null
+          },
+          "selectable": false,
+          "fatGainRisk": "high",
+          "default": false,
+          "memberLine": "주당 체중의 0.5%를 넘겨 올리면 늘어난 무게에서 체지방이 차지하는 비중이 커집니다."
+        }
+      ]
     },
     "recomp": {
-      "label": "체성분 개선",
+      "label": "체성분 재구성",
       "calorieDeltaRatio": -0.05,
-      "description": "TDEE의 5% 적자. 근육은 늘리고 체지방은 줄이는 느린 전략."
+      "description": "하루 소비량의 5% 적자. 근육을 지키며 체지방을 천천히 줄이는 느린 방식입니다."
     }
   },
   "safety": {
@@ -57,12 +182,13 @@
     "minCaloriesFemale": 1200,
     "maxWeeklyLossRateOfBodyWeight": 0.0075,
     "dangerWeeklyLossRateOfBodyWeight": 0.01,
-    "maxWeeklyGainRateOfBodyWeight": 0.005,
-    "kcalPerKgFat": 7700
+    "kcalPerKgFat": 7700,
+    "maxWeeklyGainRateOfBodyWeight": 0.005
   },
   "kcalPerGram": {
     "carb": 4,
     "protein": 4,
     "fat": 9
-  }
+  },
+  "_generatedFrom": "kb/fitness v1.4.0 (2026-09-30)"
 }
