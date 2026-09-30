@@ -1,7 +1,7 @@
 {
   "_comment": "식단링크 다이어트 방법론 카탈로그 — 사서 지식베이스(kb/fitness) 근거 반영본. 장인의 Phase 1 스텁 필드 구조를 그대로 유지하고 값·source·caution을 채웠다. 스키마 정본은 lsoong/sikdanlink 의 src/lib/types.ts Methodology[]. 서술의 정본은 kb/fitness/B-diet-methodologies.md 이고 이 파일은 그 부분집합을 데모 스키마로 옮긴 어댑터다. ratio 합이 100이 아니어도 코드가 정규화한다. carbCycle 은 7개(일~토) 가중치이고 평균 1로 정규화되므로 주간 탄수화물 총량은 보존된다.",
   "_schemaVersion": 1,
-  "_provenance": "SYAI 사서 근거 기반 지식베이스 (SYA-547, 2026-09-30). 전제: 칼로리와 단백질을 맞추면 방법론 간 체지방 감량 차이는 작습니다(Johnston 2014 JAMA; Gardner 2018 DIETFITS; Sacks 2009 POUNDS LOST). 방법론을 고르는 기준은 효과 차이가 아니라 지속 가능성과 선호입니다.",
+  "_provenance": "SYAI 사서 근거 기반 지식베이스 (내부 참조, 2026-09-30). 전제: 칼로리와 단백질을 맞추면 방법론 간 체지방 감량 차이는 작습니다(Johnston 2014 JAMA; Gardner 2018 DIETFITS; Sacks 2009 POUNDS LOST). 방법론을 고르는 기준은 효과 차이가 아니라 지속 가능성과 선호입니다.",
   "premise": {
     "id": "B0",
     "mustInclude": true,
@@ -19,7 +19,7 @@
       "간헐적 단식이 대사를 올린다 (칼로리 통제 하 근거 없음)",
       "이 방법론이 당신의 체질에 맞다 (유전형 매칭은 DIETFITS에서 실패)"
     ],
-    "_note": "정본 params/diet-methods.json 의 premise(B0)를 그대로 옮긴 것이다 — 문장을 고칠 때는 정본을 먼저 고친다. mustInclude: true 는 방법론 목록을 보여 줄 때 이 전제를 항상 함께 띄우라는 뜻이다(manifest.retrieval_rules: B1~B10 검색 시 B0 필수). 이 전제를 숨기고 방법론을 나열하면 방법론 간 효과 차이를 과장하게 되고, 그것이 이 제품의 실패 조건이다. 2026-09-30 SYA-585에서 어댑터에 추가 — 그전까지 이 층에는 B0 이 없었다."
+    "_note": "정본 params/diet-methods.json 의 premise(B0)를 그대로 옮긴 것이다 — 문장을 고칠 때는 정본을 먼저 고친다. mustInclude: true 는 방법론 목록을 보여 줄 때 이 전제를 항상 함께 띄우라는 뜻이다(manifest.retrieval_rules: B1~B10 검색 시 B0 필수). 이 전제를 숨기고 방법론을 나열하면 방법론 간 효과 차이를 과장하게 되고, 그것이 이 제품의 실패 조건이다. 2026-09-30 내부 참조에서 어댑터에 추가 — 그전까지 이 층에는 B0 이 없었다."
   },
   "methodologies": [
     {

@@ -1,7 +1,7 @@
 {
-  "_comment": "코드에 상수로 박히는 숫자 6개에 대해, ① 출처·적용조건(트레이너·개발자용) ② 회원에게 그대로 읽어 줄 수 있는 한 문장(UI 노출용)을 짝지은 파일. 요청: SYA-547 코멘트(사업가, 2026-09-30, 트레이너 B2B 확정). 장인의 Phase 1 스키마에는 이 층을 받는 필드가 없으므로 별도 파일로 둔다 — calc-params.json 로더를 건드리지 않는다. memberLine 은 의료법 문구 가이드(SYA-546 viability §6-4)를 따라 '치료·처방·진단·개선·효능·질환명'을 쓰지 않고 '계산·기록·목표 설정·추적·안내'로 쓴다.",
+  "_comment": "코드에 상수로 박히는 숫자 6개에 대해, ① 출처·적용조건(트레이너·개발자용) ② 회원에게 그대로 읽어 줄 수 있는 한 문장(UI 노출용)을 짝지은 파일. 요청: 내부 참조 코멘트(사업가, 2026-09-30, 트레이너 B2B 확정). 장인의 Phase 1 스키마에는 이 층을 받는 필드가 없으므로 별도 파일로 둔다 — calc-params.json 로더를 건드리지 않는다. memberLine 은 의료법 문구 가이드(내부 참조 viability §6-4)를 따라 '치료·처방·진단·개선·효능·질환명'을 쓰지 않고 '계산·기록·목표 설정·추적·안내'로 쓴다.",
   "_schemaVersion": 1,
-  "_provenance": "SYAI 사서 근거 기반 지식베이스 (SYA-547, 2026-09-30). 숫자의 정본은 kb/fitness/params/calculation.json, 데모 어댑터는 kb/fitness/api/calc-params.json.",
+  "_provenance": "SYAI 사서 근거 기반 지식베이스 (내부 참조, 2026-09-30). 숫자의 정본은 kb/fitness/params/calculation.json, 데모 어댑터는 kb/fitness/api/calc-params.json.",
   "wordingGuard": {
     "forbidden": [
       "치료",
